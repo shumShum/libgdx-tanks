@@ -1,11 +1,3 @@
-##
-# Copyright 2012, Prylis Incorporated.
-#
-# This file is part of The Ruby Entity-Component Framework.
-# https://github.com/cpowell/ruby-entity-component-framework
-# You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
-
 # A Entity in a game is an object that exists in the world defined by the game.
 #
 # This means that almost everything is a game entity, from the player character 

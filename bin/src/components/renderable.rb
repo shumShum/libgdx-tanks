@@ -3,7 +3,7 @@ require 'forwardable'
 
 class Renderable < Component
   extend Forwardable
-  def_delegators :@image, :width, :height # Its image knows the dimensions.
+  def_delegators :@image, :width, :height
 
   attr_accessor :image, :image_fn, :scale, :rotation
 
@@ -29,15 +29,6 @@ class Renderable < Component
     @scale    = coder['scale']
     @rotation = coder['rotation']
     @image    = Texture.new(Gdx.files.internal(image_fn))
-  end
-
-  def marshal_dump
-    [@id, @image_fn, @scale, @rotation]
-  end
-
-  def marshal_load(array)
-    @id, @image_fn, @scale, @rotation = array
-    @image = Texture.new(Gdx.files.internal(image_fn))
   end
 
 end

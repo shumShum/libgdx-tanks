@@ -1,11 +1,3 @@
-##
-# Copyright 2012, Prylis Incorporated.
-#
-# This file is part of The Ruby Entity-Component Framework.
-# https://github.com/cpowell/ruby-entity-component-framework
-# You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
-
 class AsteroidSystem < System
   def process_one_game_tick(delta, entity_mgr)
     generate_new_asteroids(delta, entity_mgr)

@@ -5,6 +5,6 @@ class PlayerInput < Component
 
   def initialize(keys)
     super()
-    @responsive_keys=keys  
+    @responsive_keys = keys  
   end
 end

@@ -1,12 +1,11 @@
 require 'components/component'
 
 class Engine < Component
-  attr_accessor :thrust
-  attr_accessor :on
+  attr_accessor :speed, :forward, :on
 
-  def initialize(thrust)
+  def initialize(speed)
     super()
-    @thrust=thrust
-    @on=false
+    @speed = speed
+    @on = false
   end
 end

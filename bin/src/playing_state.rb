@@ -1,11 +1,3 @@
-##
-# Copyright 2012, Prylis Incorporated.
-#
-# This file is part of The Ruby Entity-Component Framework.
-# https://github.com/cpowell/ruby-entity-component-framework
-# You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
-
 java_import com.badlogic.gdx.Screen
 
 require 'entity_manager'
@@ -13,19 +5,20 @@ require 'entity_manager'
 # Necesssary components
 require 'components/spatial_state'
 require 'components/player_input'
-require 'components/fuel'
 require 'components/polygon_collidable'
+require 'components/motion'
 
 # Necessary systems
 require 'systems/rendering_system'
-require 'systems/physics'
 require 'systems/input_system'
-require 'systems/spatial_system'
+require 'systems/motion_system'
 require 'systems/collision_system'
 require 'systems/asteroid_system'
 
 class PlayingState
   include Screen
+
+  PLAYER_INPUT = [Input::Keys::A, Input::Keys::S, Input::Keys::D, Input::Keys::W]
 
   def initialize(game)
     @game = game
@@ -36,17 +29,18 @@ class PlayingState
     @entity_manager = EntityManager.new
 
     p1_tank = @entity_manager.create_tagged_entity('p1_tank')
-    @entity_manager.add_component p1_tank, SpatialState.new(320, 240, 0, 0)
+    @entity_manager.add_component p1_tank, SpatialState.new(300, 220)
+    @entity_manager.add_component p1_tank, Engine.new(0.05)
+    @entity_manager.add_component p1_tank, Motion.new
     @entity_manager.add_component p1_tank, Renderable.new(RELATIVE_ROOT + "res/images/tank.png", 1.0, 0)
-    @entity_manager.add_component p1_tank, PlayerInput.new([Input::Keys::A, Input::Keys::S, Input::Keys::D])
+    @entity_manager.add_component p1_tank, PlayerInput.new(PLAYER_INPUT)
 
     # Initialize systems
-    # @physics   = Physics.new(self)
     @input     = InputSystem.new(self)
     @renderer  = RenderingSystem.new(self)
     @engine    = EngineSystem.new(self)
+    @motion   = MotionSystem.new(self)
     @collision = CollisionSystem.new(self)
-    # @asteroid  = AsteroidSystem.new(self)
 
     @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.jpg'))
 
@@ -69,7 +63,7 @@ class PlayingState
 
     @input.process_one_game_tick(delta, @entity_manager)
     @engine.process_one_game_tick(delta, @entity_manager)
-    # @physics.process_one_game_tick(delta, @entity_manager)
+    @motion.process_one_game_tick(delta, @entity_manager)
     @game_over = @collision.process_one_game_tick(delta, @entity_manager)
 
     @camera.update
