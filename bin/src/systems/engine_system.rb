@@ -6,20 +6,19 @@ class EngineSystem < System
       engine_component = entity_mgr.get_component_of_type(entity, Engine)
 
       if engine_component.on
-        location_component   = entity_mgr.get_component_of_type(entity, SpatialState)
-        renderable_component = entity_mgr.get_component_of_type(entity, Renderable)
+        location_component = entity_mgr.get_component_of_type(entity, SpatialState)
 
         amount = engine_component.speed * delta
         amount *= -1 unless engine_component.forward 
-        current_rotation   = renderable_component.rotation
+        current_rotation = engine_component.rotation
 
-        x_vector = amount * - Math.sin(current_rotation * Math::PI / 180.0);
+        x_vector = amount * -Math.sin(current_rotation * Math::PI / 180.0);
         y_vector = amount * Math.cos(current_rotation * Math::PI / 180.0);
 
         location_component.dy = y_vector
         location_component.dx = x_vector
 
-        engine_component.on = false
+        # engine_component.on = false
       end
     end
   end

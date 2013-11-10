@@ -13,12 +13,11 @@ require 'systems/rendering_system'
 require 'systems/input_system'
 require 'systems/motion_system'
 require 'systems/collision_system'
-require 'systems/asteroid_system'
 
 class PlayingState
   include Screen
 
-  PLAYER_INPUT = [Input::Keys::A, Input::Keys::S, Input::Keys::D, Input::Keys::W]
+  PLAYER_INPUT = [Input::Keys::A, Input::Keys::S, Input::Keys::D, Input::Keys::W, Input::Keys::SPACE]
 
   def initialize(game)
     @game = game
