@@ -15,4 +15,9 @@ class Engine < Component
   def rotate(amount)
     @rotation += amount
   end
+
+  def move(forward = true)
+    @on = true
+    @forward = forward
+  end 
 end

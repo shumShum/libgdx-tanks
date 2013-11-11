@@ -15,25 +15,19 @@ class InputSystem < System
     inputtable_entities.each do |entity|
       input_component = entity_mgr.get_component_of_type(entity, PlayerInput)
 
-      if Gdx.input.isKeyPressed(P1_KEY_FORWARD) && 
-          input_component.responsive_keys.include?(P1_KEY_FORWARD) && 
+      if key_pressed?(input_component, P1_KEY_FORWARD) && 
           entity_mgr.has_component_of_type(entity, Engine)
         engine_component = entity_mgr.get_component_of_type(entity, Engine)
-        engine_component.forward = true
-        engine_component.on = true
+        engine_component.move(true)
       end
 
-      if Gdx.input.isKeyPressed(P1_KEY_BACK) && 
-          input_component.responsive_keys.include?(P1_KEY_BACK) && 
+      if key_pressed?(input_component, P1_KEY_BACK) && 
           entity_mgr.has_component_of_type(entity, Engine)
         engine_component = entity_mgr.get_component_of_type(entity, Engine)
-        engine_component.forward = false
-        engine_component.on = true
+        engine_component.move(false)
       end
 
-      if Gdx.input.isKeyPressed(P1_KEY_ROTL) && 
-          input_component.responsive_keys.include?(P1_KEY_ROTL)
-          
+      if key_pressed?(input_component, P1_KEY_ROTL)
         engine_component = entity_mgr.get_component_of_type(entity, Engine)
         engine_component.rotate(delta * 0.1)
 
@@ -41,9 +35,7 @@ class InputSystem < System
         renderable_component.rotate(delta * 0.1)
       end
 
-      if Gdx.input.isKeyPressed(P1_KEY_ROTR) && 
-          input_component.responsive_keys.include?(P1_KEY_ROTR)
-        
+      if key_pressed?(input_component, P1_KEY_ROTR)
         engine_component = entity_mgr.get_component_of_type(entity, Engine)
         engine_component.rotate(delta * -0.1)
 
@@ -51,26 +43,20 @@ class InputSystem < System
         renderable_component.rotate(delta * -0.1)
       end
 
-      if Gdx.input.isKeyPressed(P1_KEY_FIRE) &&
-          input_component.responsive_keys.include?(P1_KEY_FIRE) &&
-            (entity_mgr.get_all_entities_with_tag('bullet').nil? || entity_mgr.get_all_entities_with_tag('bullet').empty?)
+      if key_pressed?(input_component, P1_KEY_FIRE) && 
+          entity_mgr.has_component_of_type(entity, Fire)
 
-        spatial_component = entity_mgr.get_component_of_type(entity, SpatialState)
-        engine_component = entity_mgr.get_component_of_type(entity, Engine)
-
-        starting_x = spatial_component.x
-        starting_y = spatial_component.y
-        rotation = engine_component.rotation + 180
-        bullet = entity_mgr.create_tagged_entity('bullet')
-        entity_mgr.add_component bullet, SpatialState.new(starting_x, starting_y)
-        entity_mgr.add_component bullet, Renderable.new(RELATIVE_ROOT + "res/images/bullet.png", 1.0, 0)
-        entity_mgr.add_component bullet, Motion.new
-        entity_mgr.add_component bullet, Engine.new(0.15, true, rotation)
-
-        s = Gdx.audio.newSound(Gdx.files.internal(RELATIVE_ROOT + 'res/sounds/fire.wav'))
-        s.play
+        fire_component = entity_mgr.get_component_of_type(entity, Fire)
+        fire_component.fire!
       end
 
     end
   end
+
+  private
+
+  def key_pressed?(input_component, key)
+    Gdx.input.isKeyPressed(key) && input_component.responsive_key?(key)
+  end
+
 end

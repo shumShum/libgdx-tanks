@@ -34,6 +34,7 @@ class PlayingState
     @entity_manager.add_component p1_tank, Motion.new
     @entity_manager.add_component p1_tank, Renderable.new(RELATIVE_ROOT + "res/images/tank.png", 1.0, 0)
     @entity_manager.add_component p1_tank, PlayerInput.new(PLAYER_INPUT)
+    @entity_manager.add_component p1_tank, Fire.new(50)
 
     # Initialize systems
     @input     = InputSystem.new(self)

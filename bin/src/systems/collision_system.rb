@@ -17,7 +17,6 @@ class CollisionSystem < System
       bounding_areas[e]=entity_mgr.get_component_of_type(e, PolygonCollidable).bounding_polygon
     end
 
-    # Naive O(n^2)
     bounding_areas.each_key do |entity|
       bounding_areas.each_key do |other|
         next if entity==other

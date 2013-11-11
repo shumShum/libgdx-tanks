@@ -7,4 +7,9 @@ class PlayerInput < Component
     super()
     @responsive_keys = keys  
   end
+
+  def responsive_key?(key)
+    @responsive_keys.include? key
+  end
+  
 end
