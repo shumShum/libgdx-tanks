@@ -24,7 +24,7 @@ class EntityManager
 
   def create_basic_entity
     uuid = java.util.UUID.randomUUID().to_s
-    @ids_to_tags[uuid]='-' # means "untagged" so it doesn't go into tags_to_ids
+    @ids_to_tags[uuid]='-' #untagged
     return uuid
   end
 

@@ -13,6 +13,7 @@ require 'systems/rendering_system'
 require 'systems/input_system'
 require 'systems/motion_system'
 require 'systems/collision_system'
+require 'systems/bullet_system'
 
 class PlayingState
   include Screen
@@ -29,7 +30,7 @@ class PlayingState
 
     p1_tank = @entity_manager.create_tagged_entity('p1_tank')
     @entity_manager.add_component p1_tank, SpatialState.new(300, 220)
-    @entity_manager.add_component p1_tank, Engine.new(0.05)
+    @entity_manager.add_component p1_tank, Engine.new(0.05, false, 0, true)
     @entity_manager.add_component p1_tank, Motion.new
     @entity_manager.add_component p1_tank, Renderable.new(RELATIVE_ROOT + "res/images/tank.png", 1.0, 0)
     @entity_manager.add_component p1_tank, PlayerInput.new(PLAYER_INPUT)
@@ -38,8 +39,9 @@ class PlayingState
     @input     = InputSystem.new(self)
     @renderer  = RenderingSystem.new(self)
     @engine    = EngineSystem.new(self)
-    @motion   = MotionSystem.new(self)
+    @motion    = MotionSystem.new(self)
     @collision = CollisionSystem.new(self)
+    @bullets   = BulletSystem.new(self)
 
     @bg_image = Texture.new(Gdx.files.internal(RELATIVE_ROOT + 'res/images/bg.jpg'))
 
@@ -63,6 +65,7 @@ class PlayingState
     @input.process_one_game_tick(delta, @entity_manager)
     @engine.process_one_game_tick(delta, @entity_manager)
     @motion.process_one_game_tick(delta, @entity_manager)
+    @bullets.process_one_game_tick(delta, @entity_manager)
     @game_over = @collision.process_one_game_tick(delta, @entity_manager)
 
     @camera.update

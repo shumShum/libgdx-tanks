@@ -11,4 +11,8 @@ class SpatialState < Component
     @dy = y_velo
   end
 
+  def screen_over?
+    (x > 640) || (x < -20) || (y > 480) || (y < -20)
+  end
+
 end

@@ -12,13 +12,13 @@ class EngineSystem < System
         amount *= -1 unless engine_component.forward 
         current_rotation = engine_component.rotation
 
-        x_vector = amount * -Math.sin(current_rotation * Math::PI / 180.0);
-        y_vector = amount * Math.cos(current_rotation * Math::PI / 180.0);
+        x_vector = amount * -Math.sin(current_rotation * Math::PI / 180.0)
+        y_vector = amount * Math.cos(current_rotation * Math::PI / 180.0)
 
         location_component.dy = y_vector
         location_component.dx = x_vector
 
-        # engine_component.on = false
+        engine_component.on = !engine_component.control_move
       end
     end
   end

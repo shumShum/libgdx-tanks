@@ -52,19 +52,23 @@ class InputSystem < System
       end
 
       if Gdx.input.isKeyPressed(P1_KEY_FIRE) &&
-          input_component.responsive_keys.include?(P1_KEY_FIRE)
+          input_component.responsive_keys.include?(P1_KEY_FIRE) &&
+            (entity_mgr.get_all_entities_with_tag('bullet').nil? || entity_mgr.get_all_entities_with_tag('bullet').empty?)
 
         spatial_component = entity_mgr.get_component_of_type(entity, SpatialState)
         engine_component = entity_mgr.get_component_of_type(entity, Engine)
 
         starting_x = spatial_component.x
         starting_y = spatial_component.y
-        rotation = engine_component.rotation
+        rotation = engine_component.rotation + 180
         bullet = entity_mgr.create_tagged_entity('bullet')
         entity_mgr.add_component bullet, SpatialState.new(starting_x, starting_y)
         entity_mgr.add_component bullet, Renderable.new(RELATIVE_ROOT + "res/images/bullet.png", 1.0, 0)
         entity_mgr.add_component bullet, Motion.new
-        entity_mgr.add_component bullet, Engine.new(0.1, true, rotation)
+        entity_mgr.add_component bullet, Engine.new(0.15, true, rotation)
+
+        s = Gdx.audio.newSound(Gdx.files.internal(RELATIVE_ROOT + 'res/sounds/fire.wav'))
+        s.play
       end
 
     end
