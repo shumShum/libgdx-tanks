@@ -1,7 +1,3 @@
-require 'systems/system'
-require 'components/renderable'
-require 'components/spatial_state'
-
 class RenderingSystem < System
   
   def process_one_game_tick(entity_mgr, camera, batch, font)

@@ -1,8 +1,3 @@
-require 'components/renderable'
-require 'components/engine'
-
-require 'systems/engine_system'
-
 class InputSystem < System
   P1_KEY_BACK = Input::Keys::S
   P1_KEY_FORWARD = Input::Keys::W

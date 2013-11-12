@@ -1,5 +1,3 @@
-require 'components/component'
-
 class Engine < Component
   attr_accessor :speed, :forward, :rotation, :control_move, :on
 

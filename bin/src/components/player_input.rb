@@ -1,5 +1,3 @@
-require 'components/component'
-
 class PlayerInput < Component
   attr_reader :responsive_keys
 

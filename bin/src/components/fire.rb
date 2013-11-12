@@ -1,5 +1,3 @@
-require 'components/component'
-
 class Fire < Component
   attr_accessor :pli, :bullet_reload, :reload_time
 

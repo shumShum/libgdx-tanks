@@ -1,5 +1,3 @@
-require 'components/renderable'
-
 java_import com.badlogic.gdx.math.Polygon
 java_import com.badlogic.gdx.math.Intersector
 

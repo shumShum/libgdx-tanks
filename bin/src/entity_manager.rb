@@ -90,6 +90,12 @@ class EntityManager
     end
   end
 
+  def add_components(entity_uuid, components)
+    components.each do |component|
+      add_component entity_uuid, component
+    end
+  end
+
   def has_component(entity_uuid, component)
     raise ArgumentError, "UUID and component must be specified" if entity_uuid.nil? || component.nil?
 

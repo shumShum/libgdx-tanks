@@ -1,5 +1,3 @@
-require 'components/fire'
-
 class BulletSystem < System
 
   def process_one_game_tick(delta, entity_mgr)
@@ -20,13 +18,16 @@ class BulletSystem < System
         starting_y = spatial_component.y
         rotation = engine_component.rotation + 180
         bullet = entity_mgr.create_tagged_entity('bullet')
-        entity_mgr.add_component bullet, SpatialState.new(starting_x, starting_y)
-        entity_mgr.add_component bullet, Renderable.new(RELATIVE_ROOT + "res/images/bullet.png", 1.0, 0)
-        entity_mgr.add_component bullet, Motion.new
-        entity_mgr.add_component bullet, Engine.new(0.15, true, rotation)
+        entity_mgr.add_components bullet, [
+          SpatialState.new(starting_x, starting_y),
+          Renderable.new(RELATIVE_ROOT + "res/images/bullet.png", 1.0, 0),
+          Motion.new,
+          Engine.new(0.15, true, rotation),
+          Sound.new([:fire])
+        ]
 
-        s = Gdx.audio.newSound(Gdx.files.internal(RELATIVE_ROOT + 'res/sounds/fire.wav'))
-        s.play
+        sound_component = entity_mgr.get_component_of_type(bullet, Sound)
+        sound_component.put(:fire)
 
         fire_component.pli = false
       end
@@ -47,11 +48,6 @@ class BulletSystem < System
         entity_mgr.kill_entity(b)
       end
     end
-  end
-
-  def self.bullet_exist?(entity_mgr)
-    bullets = entity_mgr.get_all_entities_with_tag('bullet')
-    bullets.nil? || bullets.empty?
   end
 
 end
