@@ -3,11 +3,12 @@ class Engine < Component
 
   def initialize(speed, on = false, rotation = 0, control_move = false)
     super()
-    @rotation = 0
+    @rotation = rotation
     @speed = speed
     @on = on
     @rotation = rotation
     @control_move = control_move
+    @forward = true
   end
 
   def rotate(amount)

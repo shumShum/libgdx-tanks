@@ -6,7 +6,7 @@ class Renderable < Component
 
   attr_accessor :image, :image_fn, :scale, :rotation
 
-  def initialize(image_fn, scale, rotation)
+  def initialize(image_fn, scale = 1.0, rotation = 0)
     super()
     @image_fn   = image_fn
     @image      = Texture.new(Gdx.files.internal(image_fn))

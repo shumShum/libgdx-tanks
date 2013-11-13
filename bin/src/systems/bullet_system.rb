@@ -16,11 +16,11 @@ class BulletSystem < System
 
         starting_x = spatial_component.x
         starting_y = spatial_component.y
-        rotation = engine_component.rotation + 180
+        rotation = engine_component.rotation
         bullet = entity_mgr.create_tagged_entity('bullet')
         entity_mgr.add_components bullet, [
           SpatialState.new(starting_x, starting_y),
-          Renderable.new(RELATIVE_ROOT + "res/images/bullet.png", 1.0, 0),
+          Renderable.new(RELATIVE_ROOT + "res/images/bullet.png"),
           Motion.new,
           Engine.new(0.15, true, rotation),
           Sound.new([:fire])

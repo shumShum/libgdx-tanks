@@ -25,6 +25,7 @@ require 'systems/collision_system'
 require 'systems/bullet_system'
 require 'systems/engine_system'
 require 'systems/sound_system'
+require 'systems/enemy_system'
 
 class PlayingState
   include Screen
@@ -48,7 +49,7 @@ class PlayingState
       SpatialState.new(300, 220),
       Engine.new(0.05, false, 0, true),
       Motion.new,
-      Renderable.new(IMAGE_PATH[:tank], 1.0, 0),
+      Renderable.new(IMAGE_PATH[:tank]),
       PlayerInput.new(PLAYER_INPUT),
       Fire.new(50)
     ]
@@ -61,6 +62,7 @@ class PlayingState
     @collision = CollisionSystem.new(self)
     @bullets   = BulletSystem.new(self)
     @sounds    = SoundSystem.new(self)
+    @enemies    = EnemySystem.new(self)
 
     # Initialize configs
     @sound_storage = SoundStorage.new
@@ -88,6 +90,7 @@ class PlayingState
     @engine.process_one_game_tick(delta, @entity_manager)
     @motion.process_one_game_tick(delta, @entity_manager)
     @bullets.process_one_game_tick(delta, @entity_manager)
+    @enemies.process_one_game_tick(delta, @entity_manager)
     @sounds.process_one_game_tick(delta, @entity_manager, @sound_storage)
 
     @game_over = @collision.process_one_game_tick(delta, @entity_manager)
