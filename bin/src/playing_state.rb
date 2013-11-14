@@ -15,6 +15,9 @@ require 'components/engine'
 require 'components/fire'
 require 'components/renderable'
 require 'components/sound'
+require 'components/heal_points'
+require 'components/parent'
+require 'components/damage'
 
 # Necessary systems
 require 'systems/system'
@@ -26,6 +29,7 @@ require 'systems/bullet_system'
 require 'systems/engine_system'
 require 'systems/sound_system'
 require 'systems/enemy_system'
+require 'systems/lifeline_system'
 
 class PlayingState
   include Screen
@@ -33,7 +37,7 @@ class PlayingState
   PLAYER_INPUT = [Input::Keys::A, Input::Keys::S, Input::Keys::D, Input::Keys::W, Input::Keys::SPACE]
   IMAGE_PATH = {
     tank: RELATIVE_ROOT + "res/images/tank.png",
-    background: RELATIVE_ROOT + 'res/images/bg.jpg'
+    background: RELATIVE_ROOT + 'res/images/bg.png'
   }
 
   def initialize(game)
@@ -50,8 +54,10 @@ class PlayingState
       Engine.new(0.05, false, 0, true),
       Motion.new,
       Renderable.new(IMAGE_PATH[:tank]),
+      PolygonCollidable.new,
       PlayerInput.new(PLAYER_INPUT),
-      Fire.new(50)
+      Fire.new(50, 60),
+      HealPoints.new
     ]
 
     # Initialize systems
@@ -62,7 +68,8 @@ class PlayingState
     @collision = CollisionSystem.new(self)
     @bullets   = BulletSystem.new(self)
     @sounds    = SoundSystem.new(self)
-    @enemies    = EnemySystem.new(self)
+    @enemies   = EnemySystem.new(self)
+    @lifelines = LifelineSystem.new(self)
 
     # Initialize configs
     @sound_storage = SoundStorage.new
@@ -92,8 +99,8 @@ class PlayingState
     @bullets.process_one_game_tick(delta, @entity_manager)
     @enemies.process_one_game_tick(delta, @entity_manager)
     @sounds.process_one_game_tick(delta, @entity_manager, @sound_storage)
-
-    @game_over = @collision.process_one_game_tick(delta, @entity_manager)
+    @collision.process_one_game_tick(delta, @entity_manager)
+    @lifelines.process_one_game_tick(delta, @entity_manager)
 
     @camera.update
     @batch.setProjectionMatrix(@camera.combined)

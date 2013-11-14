@@ -1,11 +1,12 @@
 class Fire < Component
-  attr_accessor :pli, :bullet_reload, :reload_time
+  attr_accessor :pli, :bullet_reload, :reload_time, :damage
 
-  def initialize(reload_time)
+  def initialize(reload_time, damage)
     super()
     @pli = false
     @bullet_reload = 0
     @reload_time = reload_time
+    @damage = damage
   end
 
   def fire!

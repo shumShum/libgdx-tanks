@@ -19,4 +19,8 @@ class Engine < Component
     @on = true
     @forward = forward
   end 
+
+  def stop
+    @on = false
+  end
 end

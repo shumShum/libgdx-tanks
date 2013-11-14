@@ -15,20 +15,18 @@ class CollisionSystem < System
       bounding_areas[e]=entity_mgr.get_component_of_type(e, PolygonCollidable).bounding_polygon
     end
 
-    bounding_areas.each_key do |entity|
-      bounding_areas.each_key do |other|
-        next if entity==other
+    intersections = []
+    bounding_areas.each_key do |entity1|
+      bounding_areas.each_key do |entity2|
+        next if entity1 == entity2
 
-        if Intersector.overlapConvexPolygons(bounding_areas[entity], bounding_areas[other]) 
-          if entity_mgr.get_tag(entity)=='p1_lander' || entity_mgr.get_tag(other)=='p1_lander'
-            #puts "Intersection!"
-            return true 
-          end
+        if Intersector.overlapConvexPolygons(bounding_areas[entity1], bounding_areas[entity2]) 
+          intersections << [entity1, entity2]
         end
       end
     end
 
-    return false
+    resolved_intersections(entity_mgr, intersections)
   end
 
   def update_bounding_polygons(entity_mgr, entities)
@@ -59,4 +57,37 @@ class CollisionSystem < System
 
     return polygon
   end
+
+  def resolved_intersections(entity_mgr, intersections)
+    intersections.each do |entity1, entity2|
+      entity1_type = entity_mgr.get_tag(entity1)
+      entity2_type = entity_mgr.get_tag(entity2)
+
+      # хуйня какая-то, переписать
+      if (entity1_type == 'bullet' || entity2_type == 'bullet') &&
+          (entity1_type != entity2_type)
+        if entity1_type == 'bullet'
+          bullet_found_target(entity1, entity2, entity_mgr)
+        else
+          bullet_found_target(entity2, entity1, entity_mgr)
+        end
+      end
+
+    end
+  end
+
+  def bullet_found_target(bullet, target, entity_mgr)
+    if entity_mgr.has_component_of_type(target, HealPoints)
+      parent_component = entity_mgr.get_component_of_type(bullet, Parent)
+      target_type = entity_mgr.get_tag(target)
+
+      if parent_component.parent_type != target_type
+        damage_component = entity_mgr.get_component_of_type(bullet, Damage)
+        hp_component = entity_mgr.get_component_of_type(target, HealPoints)
+        hp_component.damaged(damage_component.damage)
+        entity_mgr.kill_entity(bullet)
+      end
+    end
+  end
+
 end

@@ -101,7 +101,7 @@ class EntityManager
 
     store = @component_stores[component.class]
     if store.nil?
-      return false # NOBODY has this component type
+      return false
     else
       return store.has_key?(entity_uuid) && store[entity_uuid].include?(component)
     end
