@@ -19,7 +19,6 @@ require 'components/sound'
 require 'components/heal_points'
 require 'components/parent'
 require 'components/damage'
-require 'components/camera'
 
 # Necessary systems
 require 'systems/system'
@@ -78,9 +77,7 @@ class PlayingState
     @elapsed=0
 
     @camera = OrthographicCamera.new
-    @camera.setToOrtho(false, 640, 480);
-    camera_entity = @entity_manager.create_tagged_entity('camera')
-    @entity_manager.add_component camera_entity, Camera.new(@camera)
+    @camera.setToOrtho(false, 640, 480)
     
     @batch = SpriteBatch.new
     @font = BitmapFont.new
@@ -96,12 +93,12 @@ class PlayingState
     @input.process_one_game_tick(delta, @entity_manager)
     @engine.process_one_game_tick(delta, @entity_manager)
     @motion.process_one_game_tick(delta, @entity_manager)
-    @bullets.process_one_game_tick(delta, @entity_manager)
-    @enemies.process_one_game_tick(delta, @entity_manager)
+    @bullets.process_one_game_tick(delta, @entity_manager, @camera)
+    @enemies.process_one_game_tick(delta, @entity_manager, @camera)
     @sounds.process_one_game_tick(delta, @entity_manager, @sound_storage)
     @collision.process_one_game_tick(delta, @entity_manager, @image_storage)
     @lifelines.process_one_game_tick(delta, @entity_manager)
-    @camera_control.process_one_game_tick(delta, @entity_manager)
+    @camera_control.process_one_game_tick(delta, @entity_manager, @camera)
 
     @camera.update
     @batch.setProjectionMatrix(@camera.combined)

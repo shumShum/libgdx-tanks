@@ -1,8 +1,8 @@
 class BulletSystem < System
 
-  def process_one_game_tick(delta, entity_mgr)
+  def process_one_game_tick(delta, entity_mgr, camera)
     shut_and_reload_bullets(entity_mgr)
-    cleanup_bullets(entity_mgr)
+    cleanup_bullets(entity_mgr, camera)
   end
 
   def shut_and_reload_bullets(entity_mgr)
@@ -43,12 +43,13 @@ class BulletSystem < System
     end
   end
 
-  def cleanup_bullets(entity_mgr)
+  def cleanup_bullets(entity_mgr, camera)
+    cam_x, cam_y = camera.position.x, camera.position.y
     bullet_entities = entity_mgr.get_all_entities_with_tag('bullet') || []
 
     bullet_entities.each do |b|
       spatial_component = entity_mgr.get_component_of_type(b, SpatialState)
-      if spatial_component.screen_over? 
+      if spatial_component.screen_over?(cam_x, cam_y) 
         entity_mgr.kill_entity(b)
       end
     end

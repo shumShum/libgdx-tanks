@@ -23,8 +23,42 @@ class RenderingSystem < System
   end
 
   def draw_background(batch, camera, image_storage)
-    bg_image = image_storage.get_by_name(:background)
-    batch.draw(bg_image, 0, 0)
+    bg = image_storage.get_by_name(:background)
+    cam_x, cam_y = camera.position.x, camera.position.y
+    w = bg.width
+    h = bg.height
+
+    bg_x = cam_x - cam_x%w
+    bg_y = cam_y - cam_y%h
+
+    batch.draw(bg, bg_x, bg_y)
+
+    over = bg_x > cam_x - w/2
+    right = bg_y >= cam_y - h/2
+    if over 
+      batch.draw(bg, bg_x - w, bg_y)
+    else
+      batch.draw(bg, bg_x + w, bg_y)
+    end
+    
+    if right
+      batch.draw(bg, bg_x, bg_y - h)
+    else
+      batch.draw(bg, bg_x, bg_y + h)
+    end
+
+    if over && right
+      batch.draw(bg, bg_x - w, bg_y - h)
+    end
+    if !over && !right
+      batch.draw(bg, bg_x + w, bg_y + h)
+    end
+    if over && !right
+      batch.draw(bg, bg_x - w, bg_y + h)
+    end
+    if !over && right
+      batch.draw(bg, bg_x + w, bg_y - h)
+    end
   end
 end
 
