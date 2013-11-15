@@ -3,11 +3,11 @@ java_import com.badlogic.gdx.math.Intersector
 
 class CollisionSystem < System
 
-  def process_one_game_tick(delta, entity_mgr)
+  def process_one_game_tick(delta, entity_mgr, image_storage)
     collidable_entities=[]
 
     polygon_entities = entity_mgr.get_all_entities_with_component_of_type(PolygonCollidable)
-    update_bounding_polygons(entity_mgr, polygon_entities)
+    update_bounding_polygons(entity_mgr, polygon_entities, image_storage)
     collidable_entities += polygon_entities
 
     bounding_areas={}
@@ -29,17 +29,18 @@ class CollisionSystem < System
     resolved_intersections(entity_mgr, intersections)
   end
 
-  def update_bounding_polygons(entity_mgr, entities)
+  def update_bounding_polygons(entity_mgr, entities, image_storage)
     entities.each do |e|
       spatial_component    = entity_mgr.get_component_of_type(e, SpatialState)
       renderable_component = entity_mgr.get_component_of_type(e, Renderable)
+      image = image_storage.get_by_name(renderable_component.image)
       collidable_component = entity_mgr.get_component_of_type(e, PolygonCollidable)
 
       collidable_component.bounding_polygon = 
                    make_polygon(spatial_component.x, 
-                                renderable_component.width,
+                                image.width,
                                 spatial_component.y, 
-                                renderable_component.height, 
+                                image.height, 
                                 renderable_component.rotation, 
                                 renderable_component.scale)
     end

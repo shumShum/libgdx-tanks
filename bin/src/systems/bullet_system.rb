@@ -21,7 +21,7 @@ class BulletSystem < System
         bullet = entity_mgr.create_tagged_entity('bullet')
         entity_mgr.add_components bullet, [
           SpatialState.new(starting_x, starting_y),
-          Renderable.new(RELATIVE_ROOT + "res/images/bullet.png"),
+          Renderable.new(:bullet),
           PolygonCollidable.new,
           Motion.new,
           Engine.new(0.15, true, rotation),

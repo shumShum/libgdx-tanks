@@ -1,9 +1,3 @@
-# A Entity in a game is an object that exists in the world defined by the game.
-#
-# This means that almost everything is a game entity, from the player character 
-# to the box that holds the score. Some entities may be visible, others may be mobile, 
-# but all of them are part of the world of the game (even if invisible).
-
 class EntityManager
   attr_accessor :game
   attr_reader :id

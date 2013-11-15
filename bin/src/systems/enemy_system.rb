@@ -38,7 +38,7 @@ class EnemySystem < System
       SpatialState.new(x, y),
       Engine.new(0.015, true, 0, false),
       Motion.new,
-      Renderable.new(RELATIVE_ROOT + "res/images/enemy_tank.png"),
+      Renderable.new(:enemy_tank),
       PolygonCollidable.new,
       Fire.new(fire_reload_time, 1),
       HealPoints.new
