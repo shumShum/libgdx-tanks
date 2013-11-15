@@ -48,7 +48,7 @@ class PlayingState
 
     p1_tank = @entity_manager.create_tagged_entity('p1_tank')
     @entity_manager.add_components p1_tank, [
-      SpatialState.new(300, 220),
+      SpatialState.new(320, 240),
       Engine.new(0.05, false, 0, true),
       Motion.new,
       Renderable.new(:tank),
@@ -112,9 +112,6 @@ class PlayingState
       @game.increment_game_clock(@elapsed/1000*MyGame::GAME_CLOCK_MULTIPLIER)
       @elapsed = 0
     end
-
-    @font.draw(@batch, "FPS: #{Gdx.graphics.getFramesPerSecond}", 8, 460);
-    @font.draw(@batch, "ESC to exit", 8, 20);
 
     @batch.end
 

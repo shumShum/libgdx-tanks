@@ -2,7 +2,11 @@ class RenderingSystem < System
   
   def process_one_game_tick(entity_mgr, camera, batch, font, image_storage)
     draw_background(batch, camera, image_storage)
+    draw_font(batch, camera, font)
+    draw_entities(batch, entity_mgr, font, image_storage)
+  end
 
+  def draw_entities(batch, entity_mgr, font, image_storage)
     entities = entity_mgr.get_all_entities_with_components_of_type([Renderable, SpatialState])
     entities.each do |e|
       loc_comp    = entity_mgr.get_component_of_type(e, SpatialState)
@@ -19,8 +23,13 @@ class RenderingSystem < System
         image.width, image.height,
         false, false
       )
+
+      if entity_mgr.has_component_of_type(e, HealPoints)
+        hp_comp = entity_mgr.get_component_of_type(e, HealPoints)
+        font.draw(batch, "HP: #{hp_comp.hp}", loc_comp.x, loc_comp.y)
+      end
     end
-  end
+  end 
 
   def draw_background(batch, camera, image_storage)
     bg = image_storage.get_by_name(:background)
@@ -59,6 +68,11 @@ class RenderingSystem < System
     if !over && right
       batch.draw(bg, bg_x + w, bg_y - h)
     end
+  end
+
+  def draw_font(batch, camera, font)
+    font.draw(batch, "FPS: #{Gdx.graphics.getFramesPerSecond}", camera.position.x - 320 + 8, camera.position.y - 240 + 460);
+    font.draw(batch, "ESC to exit", camera.position.x - 320 + 8, camera.position.y - 240 + 20);
   end
 end
 
