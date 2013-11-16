@@ -1,7 +1,9 @@
 class SoundStorage
   
   SOUND_PATH_BASE = {
-    fire: 'res/sounds/fire.wav'
+    fire: 'res/sounds/fire.wav',
+    damage: 'res/sounds/damage.wav',
+    explosion: 'res/sounds/explosion1.wav',
   }
 
   attr_reader :sound_base

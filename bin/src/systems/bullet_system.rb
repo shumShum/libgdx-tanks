@@ -20,7 +20,7 @@ class BulletSystem < System
         parent_type = entity_mgr.get_tag(entity)
         bullet = entity_mgr.create_tagged_entity('bullet')
         entity_mgr.add_components bullet, [
-          SpatialState.new(starting_x, starting_y),
+          SpatialState.new(starting_x + 25, starting_y + 35),
           Renderable.new(:bullet),
           PolygonCollidable.new,
           Motion.new,

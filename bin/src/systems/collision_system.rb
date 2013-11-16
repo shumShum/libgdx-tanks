@@ -54,7 +54,7 @@ class CollisionSystem < System
       0, height])
 
     polygon.setPosition(position_x, position_y)
-    polygon.setRotation(rotation)
+    # polygon.setRotation(rotation)
 
     return polygon
   end
@@ -74,6 +74,12 @@ class CollisionSystem < System
         end
       end
 
+      # if ((entity1_type == "enemy") || (entity1_type == "p1_tank")) &&
+      #     ((entity2_type == "enemy") || (entity2_type == "p1_tank"))
+      #   block_moving(entity1, entity_mgr)
+      #   block_moving(entity2, entity_mgr)
+      # end
+
     end
   end
 
@@ -84,11 +90,21 @@ class CollisionSystem < System
 
       if parent_component.parent_type != target_type
         damage_component = entity_mgr.get_component_of_type(bullet, Damage)
+        
         hp_component = entity_mgr.get_component_of_type(target, HealPoints)
         hp_component.damaged(damage_component.damage)
+
+        sound_component = entity_mgr.get_component_of_type(target, Sound)
+        sound_component.put(:damage)
+
         entity_mgr.kill_entity(bullet)
       end
     end
+  end
+
+  def block_moving(tank, entity_mgr)
+    engine_comp = entity_mgr.get_component_of_type(tank, Engine)
+    engine_comp.on = false
   end
 
 end

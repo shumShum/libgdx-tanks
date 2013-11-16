@@ -41,8 +41,9 @@ class EnemySystem < System
       Motion.new,
       Renderable.new(:enemy_tank),
       PolygonCollidable.new,
-      Fire.new(fire_reload_time, 1),
-      HealPoints.new
+      Fire.new(fire_reload_time, 1, 200),
+      HealPoints.new,
+      Sound.new([:damage])
     ]
   end
 

@@ -6,7 +6,7 @@ class SoundSystem < System
       sound_component = entity_mgr.get_component_of_type(entity, Sound)
       sound_component.queue.each do |sound|
         s = sound_storage.get_by_name(sound)
-        s.play
+        s.play unless s.nil?
       end
       sound_component.queue = [] 
     end

@@ -55,7 +55,8 @@ class PlayingState
       PolygonCollidable.new,
       PlayerInput.new(PLAYER_INPUT),
       Fire.new(50, 60),
-      HealPoints.new
+      HealPoints.new,
+      Sound.new([:damage])
     ]
 
     # Initialize systems
@@ -91,13 +92,13 @@ class PlayingState
     delta = gdx_delta * 1000
 
     @input.process_one_game_tick(delta, @entity_manager)
+    @collision.process_one_game_tick(delta, @entity_manager, @image_storage)
     @engine.process_one_game_tick(delta, @entity_manager)
     @motion.process_one_game_tick(delta, @entity_manager)
     @bullets.process_one_game_tick(delta, @entity_manager, @camera)
     @enemies.process_one_game_tick(delta, @entity_manager, @camera)
     @sounds.process_one_game_tick(delta, @entity_manager, @sound_storage)
-    @collision.process_one_game_tick(delta, @entity_manager, @image_storage)
-    @lifelines.process_one_game_tick(delta, @entity_manager)
+    @lifelines.process_one_game_tick(delta, @entity_manager, @sound_storage)
     @camera_control.process_one_game_tick(delta, @entity_manager, @camera)
 
     @camera.update
