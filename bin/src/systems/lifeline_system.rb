@@ -5,7 +5,7 @@ class LifelineSystem < System
     hp_entities.each do |entity|
       hp_component = entity_mgr.get_component_of_type(entity, HealPoints)
 
-      if hp_component.hp < 0
+      if hp_component.hp <= 0
         entity_mgr.kill_entity(entity) 
 
         s = sound_storage.get_by_name(:explosion)

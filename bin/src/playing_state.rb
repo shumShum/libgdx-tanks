@@ -54,7 +54,7 @@ class PlayingState
       Renderable.new(:tank),
       PolygonCollidable.new,
       PlayerInput.new(PLAYER_INPUT),
-      Fire.new(50, 60),
+      Fire.new(50, 50),
       HealPoints.new,
       Sound.new([:damage])
     ]
